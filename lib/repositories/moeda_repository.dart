@@ -8,8 +8,8 @@ class MoedaRepository {
         sigla: 'BT',
         preco: 29.90),
     Moeda(
-        icone: 'images/dodgecoin.png',
-        nome: 'DodgeCoin',
+        icone: 'images/dogecoin.png',
+        nome: 'DogeCoin',
         sigla: 'DG',
         preco: 11.9),
     Moeda(
