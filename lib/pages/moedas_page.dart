@@ -1,3 +1,4 @@
+import 'package:cripto/configs/app_settings.dart';
 import 'package:cripto/models/moeda.dart';
 import 'package:cripto/pages/moedas_detalhes_page.dart';
 import 'package:cripto/repositories/favoritos_repository.dart';
@@ -16,10 +17,36 @@ class MoedasPage extends StatefulWidget {
 class _MoedasPageState extends State<MoedasPage> {
   final tabela = MoedaRepository.tabela;
 
-  NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
+  late NumberFormat real;
+  late Map<String, String> loc;
 
   List<Moeda> selecionadas = [];
   late FavoritosRepository favoritos;
+
+  readnumberFormat() {
+    loc = context.watch<AppSettings>().locale;
+    real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
+  }
+
+  changeLanguageButton() {
+    final locale = loc['locale'] == 'pt_BR' ? 'en_US' : 'pt_BR';
+    final name = loc['locale'] == 'pt_BR' ? '\$' : 'R\$';
+    return PopupMenuButton(
+      icon: Icon(Icons.language),
+      itemBuilder: (context) => [
+        PopupMenuItem(
+          child: ListTile(
+            leading: Icon(Icons.swap_vert),
+            title: Text('Usar $locale'),
+            onTap: () {
+              context.read<AppSettings>().setLocale(locale, name);
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      ],
+    );
+  }
 
   limparSelecionadas() {
     setState(() {
@@ -29,7 +56,8 @@ class _MoedasPageState extends State<MoedasPage> {
 
   appBarDinamica() {
     if (selecionadas.isEmpty) {
-      return AppBar(title: const Text("Cripto"));
+      return AppBar(
+          actions: [changeLanguageButton()], title: const Text("Cripto"));
     } else {
       return AppBar(
         leading: IconButton(
@@ -60,7 +88,9 @@ class _MoedasPageState extends State<MoedasPage> {
 
   @override
   Widget build(BuildContext context) {
-    favoritos = Provider.of<FavoritosRepository>(context);
+    favoritos = context.watch<FavoritosRepository>();
+
+    readnumberFormat();
     return Scaffold(
       appBar: appBarDinamica(),
       body: ListView.separated(
@@ -72,12 +102,18 @@ class _MoedasPageState extends State<MoedasPage> {
                   ? const CircleAvatar(child: Icon(Icons.check))
                   : SizedBox(
                       width: 40, child: Image.asset(tabela[moeda].icone)),
-              title: Text(
-                tabela[moeda].nome,
-                style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor),
+              title: Row(
+                children: [
+                  Text(
+                    tabela[moeda].nome,
+                    style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor),
+                  ),
+                  if (favoritos.lista.contains(tabela[moeda]))
+                    Icon(Icons.circle, color: Colors.amber, size: 8),
+                ],
               ),
               trailing: Text(
                 real.format(tabela[moeda].preco),
