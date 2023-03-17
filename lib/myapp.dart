@@ -1,4 +1,4 @@
-import 'package:cripto/pages/moedas_page.dart';
+import 'package:cripto/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
       title: 'CriptoBase',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: MoedasPage(),
+      home: const HomePage(),
     );
   }
 }

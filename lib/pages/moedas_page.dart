@@ -1,10 +1,13 @@
 import 'package:cripto/models/moeda.dart';
+import 'package:cripto/pages/moedas_detalhes_page.dart';
+import 'package:cripto/repositories/favoritos_repository.dart';
 import 'package:cripto/repositories/moeda_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class MoedasPage extends StatefulWidget {
-  MoedasPage({super.key});
+  const MoedasPage({super.key});
 
   @override
   State<MoedasPage> createState() => _MoedasPageState();
@@ -16,14 +19,21 @@ class _MoedasPageState extends State<MoedasPage> {
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
   List<Moeda> selecionadas = [];
+  late FavoritosRepository favoritos;
+
+  limparSelecionadas() {
+    setState(() {
+      selecionadas = [];
+    });
+  }
 
   appBarDinamica() {
     if (selecionadas.isEmpty) {
-      return AppBar(title: Text("Cripto"));
+      return AppBar(title: const Text("Cripto"));
     } else {
       return AppBar(
         leading: IconButton(
-          icon: Icon(Icons.clear_all),
+          icon: const Icon(Icons.clear_all),
           onPressed: () {
             setState(() {
               selecionadas = [];
@@ -33,26 +43,33 @@ class _MoedasPageState extends State<MoedasPage> {
         title: Text('${selecionadas.length} selecionadas'),
         backgroundColor: Colors.blueGrey,
         elevation: 1,
-        iconTheme: IconThemeData(color: Colors.black87),
-        titleTextStyle: TextStyle(
+        iconTheme: const IconThemeData(color: Colors.black87),
+        titleTextStyle: const TextStyle(
             color: Colors.black87, fontSize: 20, fontWeight: FontWeight.bold),
       );
     }
   }
 
-  mostrarDetalhes(Moeda moeda) {}
+  mostrarDetalhes(Moeda moeda) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MoedasDetalhePage(moeda: moeda),
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
+    favoritos = Provider.of<FavoritosRepository>(context);
     return Scaffold(
       appBar: appBarDinamica(),
       body: ListView.separated(
           itemBuilder: (BuildContext context, int moeda) {
             return ListTile(
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12))),
               leading: (selecionadas.contains(tabela[moeda]))
-                  ? CircleAvatar(child: Icon(Icons.check))
+                  ? const CircleAvatar(child: Icon(Icons.check))
                   : SizedBox(
                       width: 40, child: Image.asset(tabela[moeda].icone)),
               title: Text(
@@ -71,7 +88,6 @@ class _MoedasPageState extends State<MoedasPage> {
               selected: selecionadas.contains(tabela[moeda]),
               selectedTileColor: Theme.of(context).primaryColorLight,
               onLongPress: () {
-                print('pressionou');
                 setState(() {
                   (selecionadas.contains(tabela[moeda]))
                       ? selecionadas.remove(tabela[moeda])
@@ -83,15 +99,18 @@ class _MoedasPageState extends State<MoedasPage> {
               },
             );
           },
-          padding: EdgeInsets.all(16),
-          separatorBuilder: (_, __) => Divider(),
+          padding: const EdgeInsets.all(16),
+          separatorBuilder: (_, __) => const Divider(),
           itemCount: tabela.length),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: selecionadas.isNotEmpty
           ? FloatingActionButton.extended(
-              onPressed: () {},
-              icon: Icon(Icons.star),
-              label: Text(
+              onPressed: () {
+                favoritos.saveAll(selecionadas);
+                limparSelecionadas();
+              },
+              icon: const Icon(Icons.star),
+              label: const Text(
                 'Favoritar',
                 style: TextStyle(letterSpacing: 0, fontWeight: FontWeight.bold),
               ))
