@@ -1,3 +1,4 @@
+import 'package:cripto/pages/configuracoes_page.dart';
 import 'package:cripto/pages/favoritos_page.dart';
 import 'package:cripto/pages/moedas_page.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ class _HomePageState extends State<HomePage> {
         children: const [
           MoedasPage(),
           FavoritosPage(),
+          ConfiguracoesPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -41,6 +43,8 @@ class _HomePageState extends State<HomePage> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Todas'),
           BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favoritas'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: 'Configuracoes'),
         ],
         onTap: (pagina) {
           pc.animateToPage(pagina,
