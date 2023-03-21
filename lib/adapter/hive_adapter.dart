@@ -7,8 +7,6 @@ class MoedaHiveAdapter extends TypeAdapter<Moeda> {
 
   @override
   Moeda read(BinaryReader reader) {
-    // TODO: implement read
-
     return Moeda(
         icone: reader.readString(),
         nome: reader.readString(),
@@ -18,8 +16,6 @@ class MoedaHiveAdapter extends TypeAdapter<Moeda> {
 
   @override
   void write(BinaryWriter writer, Moeda obj) {
-    // TODO: implement write
-
     writer.writeString(obj.icone);
     writer.writeString(obj.nome);
     writer.writeString(obj.sigla);

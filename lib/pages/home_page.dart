@@ -1,3 +1,4 @@
+import 'package:cripto/pages/carteira_page.dart';
 import 'package:cripto/pages/configuracoes_page.dart';
 import 'package:cripto/pages/favoritos_page.dart';
 import 'package:cripto/pages/moedas_page.dart';
@@ -36,15 +37,18 @@ class _HomePageState extends State<HomePage> {
           MoedasPage(),
           FavoritosPage(),
           ConfiguracoesPage(),
+          CarteiraPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: paginaAtual,
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Todas'),
           BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favoritas'),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), label: 'Configuracoes'),
+          BottomNavigationBarItem(icon: Icon(Icons.wallet), label: 'Carteira'),
         ],
         onTap: (pagina) {
           pc.animateToPage(pagina,

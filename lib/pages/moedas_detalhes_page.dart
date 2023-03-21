@@ -1,7 +1,9 @@
 import 'package:cripto/models/moeda.dart';
+import 'package:cripto/repositories/conta_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class MoedasDetalhePage extends StatefulWidget {
@@ -17,6 +19,7 @@ class _MoedasDetalhePageState extends State<MoedasDetalhePage> {
   final _form = GlobalKey<FormState>();
   final _valor = TextEditingController();
   double quantidade = 0;
+  late ContaRepostiory conta;
 
   comprar() {
     if (_form.currentState!.validate()) {
@@ -29,6 +32,8 @@ class _MoedasDetalhePageState extends State<MoedasDetalhePage> {
 
   @override
   Widget build(BuildContext context) {
+    conta = Provider.of<ContaRepostiory>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.moeda.nome),
