@@ -1,8 +1,7 @@
-import 'package:cripto/moeda_card.dart';
+import 'package:cripto/widgets/moeda_card.dart';
 import 'package:cripto/repositories/favoritos_repository.dart';
 
-import '../models/moeda.dart'; // ignore_for_file: prefer_const_constructors
-import 'moedas_page.dart';
+// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

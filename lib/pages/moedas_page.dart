@@ -32,11 +32,11 @@ class _MoedasPageState extends State<MoedasPage> {
     final locale = loc['locale'] == 'pt_BR' ? 'en_US' : 'pt_BR';
     final name = loc['locale'] == 'pt_BR' ? '\$' : 'R\$';
     return PopupMenuButton(
-      icon: Icon(Icons.language),
+      icon: const Icon(Icons.language),
       itemBuilder: (context) => [
         PopupMenuItem(
           child: ListTile(
-            leading: Icon(Icons.swap_vert),
+            leading: const Icon(Icons.swap_vert),
             title: Text('Usar $locale'),
             onTap: () {
               context.read<AppSettings>().setLocale(locale, name);
@@ -113,7 +113,7 @@ class _MoedasPageState extends State<MoedasPage> {
                   ),
                   if (favoritos.lista
                       .any((fav) => fav.sigla == tabela[moeda].sigla))
-                    Icon(Icons.circle, color: Colors.amber, size: 8),
+                    const Icon(Icons.circle, color: Colors.amber, size: 8),
                 ],
               ),
               trailing: Text(

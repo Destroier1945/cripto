@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cripto/models/moeda.dart';
 import 'package:cripto/repositories/conta_repository.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,6 @@
 import 'package:cripto/configs/app_settings.dart';
 import 'package:cripto/repositories/conta_repository.dart';
+import 'package:cripto/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -21,23 +22,40 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
         NumberFormat.currency(locale: loc['locale'], name: loc['name']);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Configuracoes')),
+      appBar: AppBar(title: const Text('Configuracoes')),
       body: Padding(
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         child: Column(children: [
           ListTile(
-            title: Text('Saldo'),
+            title: const Text('Saldo'),
             subtitle: Text(
               real.format(conta.saldo),
               style: TextStyle(
                   fontSize: 25, color: Theme.of(context).primaryColor),
             ),
             trailing: IconButton(
-              icon: Icon(Icons.edit),
+              icon: const Icon(Icons.edit),
               onPressed: updateSaldo,
             ),
           ),
-          Divider(),
+          const Divider(),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: OutlinedButton(
+              onPressed: () => context.read<AuthService>().logout(),
+              style: OutlinedButton.styleFrom(primary: Colors.red),
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    'Sair do App',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ]),
+            ),
+          ),
         ]),
       ),
     );
@@ -51,7 +69,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
     valor.text = conta.saldo.toString();
 
     AlertDialog dialog = AlertDialog(
-      title: Text('Atualizar o saldo'),
+      title: const Text('Atualizar o saldo'),
       content: Form(
         key: form,
         child: TextFormField(
@@ -67,7 +85,8 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
       ),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(context), child: Text('Cancelar')),
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar')),
         TextButton(
             onPressed: () {
               if (form.currentState!.validate()) {
@@ -75,7 +94,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                 Navigator.pop(context);
               }
             },
-            child: Text('Salvar'))
+            child: const Text('Salvar'))
       ],
     );
     showDialog(context: context, builder: (context) => dialog);

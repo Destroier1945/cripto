@@ -23,6 +23,7 @@ class FavoritosRepository extends ChangeNotifier {
   }
 
   _readFavoritas() {
+    // ignore: avoid_function_literals_in_foreach_calls
     box.keys.forEach((moeda) async {
       Moeda m = await box.get(moeda);
       _lista.add(m);
@@ -33,12 +34,12 @@ class FavoritosRepository extends ChangeNotifier {
   UnmodifiableListView<Moeda> get lista => UnmodifiableListView(_lista);
 
   saveAll(List<Moeda> moedas) {
-    moedas.forEach((moeda) {
+    for (var moeda in moedas) {
       if (!_lista.any((atual) => atual.sigla == moeda.sigla)) {
         _lista.add(moeda);
         box.put(moeda.sigla, moeda);
       }
-    });
+    }
     notifyListeners();
   }
 

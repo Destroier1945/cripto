@@ -32,9 +32,9 @@ class _CarteiraPageState extends State<CarteiraPage> {
     setTotalCarteira();
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(top: 48),
+        padding: const EdgeInsets.only(top: 48),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(top: 48, bottom: 8),
             child: Text(
               ' Valor da Carteira',
@@ -43,10 +43,11 @@ class _CarteiraPageState extends State<CarteiraPage> {
           ),
           Text(
             real.format(totalCarteira),
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 35, fontWeight: FontWeight.w600, letterSpacing: -1.5),
           ),
           loadGrafico(),
+          loadHistorico(),
         ]),
       ),
     );
@@ -64,10 +65,10 @@ class _CarteiraPageState extends State<CarteiraPage> {
 
   loadGrafico() {
     return (conta.saldo <= 0)
-        ? Container(
+        ? SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 200,
-            child: Center(
+            child: const Center(
               child: CircularProgressIndicator(),
             ),
           )
@@ -108,7 +109,7 @@ class _CarteiraPageState extends State<CarteiraPage> {
                   ),
                   Text(
                     real.format(graficoValor),
-                    style: TextStyle(fontSize: 28),
+                    style: const TextStyle(fontSize: 28),
                   )
                 ],
               )
@@ -157,5 +158,20 @@ class _CarteiraPageState extends State<CarteiraPage> {
     }
   }
 
-  loadHistorico() {}
+  loadHistorico() {
+    final historico = conta.historico;
+    final date = DateFormat('dd/MM/yyy - hh:mm');
+    List<Widget> widgets = [];
+    for (var operacao in historico) {
+      widgets.add(ListTile(
+        title: Text(operacao.moeda.nome),
+        subtitle: Text(date.format(operacao.dataOperacao)),
+        trailing: Text(real.format(operacao.moeda.preco * operacao.quantidade)),
+      ));
+      widgets.add(const Divider());
+    }
+    return Column(
+      children: widgets,
+    );
+  }
 }
