@@ -15,7 +15,7 @@ class ConfiguracoesPage extends StatefulWidget {
 class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   @override
   Widget build(BuildContext context) {
-    final conta = context.watch<ContaRepostiory>();
+    final conta = context.watch<ContaRepository>();
     final loc = context.read<AppSettings>().locale;
     NumberFormat real =
         NumberFormat.currency(locale: loc['locale'], name: loc['name']);
@@ -46,7 +46,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   updateSaldo() async {
     final form = GlobalKey<FormState>();
     final valor = TextEditingController();
-    final conta = context.read<ContaRepostiory>();
+    final conta = context.read<ContaRepository>();
 
     valor.text = conta.saldo.toString();
 

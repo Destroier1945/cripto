@@ -49,13 +49,13 @@ String get _carteira => '''
   );
 ''';
 String get _historico => '''
-  CREATE TABLE historico(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    data_operacao INT,
-    tipo_operacao STRING,
-    moeda TEXT,
-    sigla TEXT,
-    valor REAL, 
-    quantidade TEXT
+  CREATE TABLE historico (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      data_operacao INT,
+      tipo_operacao TEXT,
+      moeda TEXT,
+      sigla TEXT,
+      valor REAL,
+      quantidade TEXT
   );
 ''';

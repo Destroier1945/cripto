@@ -19,11 +19,12 @@ class _MoedasDetalhePageState extends State<MoedasDetalhePage> {
   final _form = GlobalKey<FormState>();
   final _valor = TextEditingController();
   double quantidade = 0;
-  late ContaRepostiory conta;
+  late ContaRepository conta;
 
-  comprar() {
+  comprar() async {
     if (_form.currentState!.validate()) {
       //salvar a compra
+      await conta.comprar(widget.moeda, double.parse(_valor.text));
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Compra realizada com sucesso!!!')));
@@ -32,7 +33,7 @@ class _MoedasDetalhePageState extends State<MoedasDetalhePage> {
 
   @override
   Widget build(BuildContext context) {
-    conta = Provider.of<ContaRepostiory>(context, listen: false);
+    conta = Provider.of<ContaRepository>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -103,6 +104,8 @@ class _MoedasDetalhePageState extends State<MoedasDetalhePage> {
                     return 'Informe o valor da compra';
                   } else if (double.parse(value) < 50) {
                     return 'Compra minima e R\$50.00';
+                  } else if (double.parse(value) > conta.saldo) {
+                    return 'Voce nao tem saldo suficiente';
                   }
                   return null;
                 },

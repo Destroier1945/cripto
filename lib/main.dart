@@ -15,7 +15,7 @@ Future<void> main() async {
     create: (context) => FavoritosRepository(),
     child: MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ContaRepostiory()),
+        ChangeNotifierProvider(create: (context) => ContaRepository()),
         ChangeNotifierProvider(create: (context) => AppSettings()),
         ChangeNotifierProvider(create: (context) => FavoritosRepository()),
       ],

@@ -14,17 +14,18 @@ class CarteiraPage extends StatefulWidget {
 }
 
 class _CarteiraPageState extends State<CarteiraPage> {
+  int touchedIndex = -1;
   int index = 0;
   double totalCarteira = 0;
   double saldo = 0;
   late NumberFormat real;
-  late ContaRepostiory conta;
+  late ContaRepository conta;
   String graficoLabel = '';
   double graficoValor = 0;
   List<Posicao> carteira = [];
   @override
   Widget build(BuildContext context) {
-    conta = context.watch<ContaRepostiory>();
+    conta = context.watch<ContaRepository>();
     final loc = context.read<AppSettings>().locale;
     real = NumberFormat.currency(locale: loc['locale'], name: loc['name']);
     saldo = conta.saldo;
@@ -81,11 +82,16 @@ class _CarteiraPageState extends State<CarteiraPage> {
                     centerSpaceRadius: 110,
                     sections: loadCarteira(),
                     pieTouchData: PieTouchData(
-                      touchCallback: (FlTouchEvent event, PieTouchResponse) =>
+                      touchCallback: (FlTouchEvent event, pieTouchResponse) =>
                           setState(() {
-                        index = PieTouchResponse!
+                        if (!event.isInterestedForInteractions ||
+                            pieTouchResponse == null ||
+                            pieTouchResponse.touchedSection == null) {
+                          index = -1;
+                          return;
+                        }
+                        touchedIndex = pieTouchResponse
                             .touchedSection!.touchedSectionIndex;
-                        setGraficoDados(index);
                       }),
                     ),
                   ),
@@ -150,4 +156,6 @@ class _CarteiraPageState extends State<CarteiraPage> {
       graficoValor = carteira[index].moeda.preco * carteira[index].quantidade;
     }
   }
+
+  loadHistorico() {}
 }
