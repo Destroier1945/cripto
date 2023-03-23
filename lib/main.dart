@@ -3,6 +3,7 @@ import 'package:cripto/configs/hive_config.dart';
 import 'package:cripto/myapp.dart';
 import 'package:cripto/repositories/conta_repository.dart';
 import 'package:cripto/repositories/favoritos_repository.dart';
+import 'package:cripto/repositories/moeda_repository.dart';
 import 'package:cripto/service/auth_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -15,16 +16,21 @@ Future<void> main() async {
 
   await HiveConfig.start();
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => FavoritosRepository(),
-    child: MultiProvider(
+  runApp(
+    MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
-        ChangeNotifierProvider(create: (context) => ContaRepository()),
+        ChangeNotifierProvider(create: (context) => MoedaRepository()),
+        ChangeNotifierProvider(
+            create: (context) =>
+                ContaRepository(moedas: context.read<MoedaRepository>())),
         ChangeNotifierProvider(create: (context) => AppSettings()),
-        ChangeNotifierProvider(create: (context) => FavoritosRepository()),
+        ChangeNotifierProvider(
+            create: (context) => FavoritosRepository(
+                auth: context.read<AuthService>(),
+                moedas: context.read<MoedaRepository>())),
       ],
       child: const MyApp(),
     ),
-  ));
+  );
 }

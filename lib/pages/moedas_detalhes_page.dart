@@ -2,6 +2,7 @@
 
 import 'package:cripto/models/moeda.dart';
 import 'package:cripto/repositories/conta_repository.dart';
+import 'package:cripto/widgets/grafico_historico.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -22,6 +23,16 @@ class _MoedasDetalhePageState extends State<MoedasDetalhePage> {
   final _valor = TextEditingController();
   double quantidade = 0;
   late ContaRepository conta;
+  Widget grafico = Container();
+  bool graficoLoaded = false;
+
+  getgrafico() {
+    if (!graficoLoaded) {
+      grafico = GraficoHistorico(moeda: widget.moeda);
+      graficoLoaded = true;
+    }
+    return grafico;
+  }
 
   comprar() async {
     if (_form.currentState!.validate()) {
@@ -49,9 +60,9 @@ class _MoedasDetalhePageState extends State<MoedasDetalhePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: 50,
-                  child: Image.asset(widget.moeda.icone),
+                Image.network(
+                  widget.moeda.icone,
+                  scale: 2.5,
                 ),
                 Text(
                   real.format(widget.moeda.preco),
@@ -64,6 +75,7 @@ class _MoedasDetalhePageState extends State<MoedasDetalhePage> {
                 ),
               ],
             ),
+            getgrafico(),
             (quantidade > 0)
                 ? SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -92,7 +104,7 @@ class _MoedasDetalhePageState extends State<MoedasDetalhePage> {
                 style: const TextStyle(fontSize: 22),
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Price',
+                  labelText: 'Preco',
                   prefixIcon: Icon(Icons.monetization_on_outlined),
                   suffix: Text(
                     'reais',
