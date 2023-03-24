@@ -5,7 +5,7 @@ import 'package:cripto/repositories/conta_repository.dart';
 import 'package:cripto/repositories/favoritos_repository.dart';
 import 'package:cripto/repositories/moeda_repository.dart';
 import 'package:cripto/service/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,7 @@ Future<void> main() async {
 
   await HiveConfig.start();
 
-  await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+  //await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
 
   runApp(
     MultiProvider(
